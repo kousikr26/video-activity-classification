@@ -1,0 +1,71 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\title{Video classification}
+\author{Kousik Rajesh }
+\date{February 2020}
+
+\begin{document}
+
+\maketitle
+
+\section*{Introduction}
+Link to colab notebook: \textcolor{blue}{\href{https://colab.research.google.com/drive/1ThWqv2jwK57T9Aenhff0U7XSn46bT1qS}{Notebook link}.}\\
+Link to google drive: \textcolor{blue}{\href{https://drive.google.com/drive/folders/1ZnX1hGODNWyqyYUgabagEK3TogYiJN10?usp=sharing}{Drive Link}}\\
+Link to Github repo: \textcolor{blue}{\href{https://drive.google.com/drive/folders/1ZnX1hGODNWyqyYUgabagEK3TogYiJN10?usp=sharing}{Github repo}}
+\subsection*{Task classification}
+
+There are 10 breakfast items (i.e., cereals, coffee, fried egg, milk, salat, sandwich, tea, scrambled egg, pancake, juice)
+Each video segment consists of a person making one of these 10 breakfast items.
+
+Classifying such a task requires one to consider the actual order of different actions. The capability of an LSTM to learn sequential patterns would be quite useful in this scenario.
+
+My model consists of two stacked Bidirectional LSTM layers, each cell of which has a 400 length output vector. The concatenation of both the forward and backward pass output gives an 800 length output vector. Finally, max pooling is applied over the output from each LSTM cell to get a vector of size 800. A dense softmax layer follows, which outputs the softmax probability for each of the 10 classes.
+\begin{table}[!htb]
+    
+    \begin{minipage}{.5\linewidth}
+      \caption{Model description}
+      \centering
+        \begin{tabular}{| c | c | c |}
+        \hline
+        Layer (type) &  Output Shape & Parameters \\
+        \hline
+        \hline
+        Bidirectional LSTM &  (None, None, 800) & 2563200  \\
+        Bidirectional LSTM &  (None, None, 800) & 3843200  \\
+        MaxPooling1D & (None, None, 800) &  0   \\
+        Dense & (None, None, 10) & 8010 \\
+        \hline
+        \end{tabular}
+    \end{minipage}%
+    \begin{minipage}{.5\linewidth}
+      \centering
+        \caption{Test results on given test data}
+         \begin{tabular}{| c | c | c |}
+            \hline
+         Test split & Loss & Accuracy \\ 
+         \hline
+         Split 1 & 0.6129 & 0.7579 \\  
+         Split 2 & 0.6449 & 0.7583  \\
+         Split 3 & 0.5142 & 0.7898  \\
+         Split 4 & 0.5722 & 0.7847  \\
+         \hline
+         
+        \end{tabular}
+    \end{minipage} 
+\end{table}
+\subsection*{Activity classification from feature vectors}
+We have seen the methodology to perform activity classification now coming to the action classification task:
+There are 48 different activities as given in the mapping.txt file.
+To perform activity classification first I tried using a simple neural network, the reasoning being that each feature vector could be assumed to be independent of the previous and no previous information is necessary to classify any frame. Using such a network with 2 hidden layers I was able to obtain an accuracy of 87.41 \%.
+
+Then I tried an LSTM architecture to see if there is any significant improvement in accuracy.
+
+\subsection*{Miscellaneous}
+At first glance the task classification accuracy isn't too high(75\%) however this is due to insufficient training time.
+Due to time and memory constraints on Google colab and also the painfully slow training process of bidirectional LSTM's I was able to train each training data bundle for one epoch only. Considering this I feel the accuracy is pretty high.
+\\
+Also I used Keras for quick prototyping as due to ongoing exams in my institute I didn't have much time to concentrate here.
+\end{document}
