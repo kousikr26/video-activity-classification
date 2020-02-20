@@ -1,9 +1,9 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
-\usepackage[margin=1in]{geometry}
+\usepackage[margin=0.5in]{geometry}
 \usepackage{hyperref}
 \usepackage{xcolor}
-\title{Video classification}
+\title{Video activity classification}
 \author{Kousik Rajesh }
 \date{February 2020}
 
@@ -12,10 +12,15 @@
 \maketitle
 
 \section*{Introduction}
+Task: To perform video action classification on the Breakfast actions dataset.\\
 Link to colab notebook: \textcolor{blue}{\href{https://colab.research.google.com/drive/1ThWqv2jwK57T9Aenhff0U7XSn46bT1qS}{Notebook link}.}\\
-Link to google drive: \textcolor{blue}{\href{https://drive.google.com/drive/folders/1ZnX1hGODNWyqyYUgabagEK3TogYiJN10?usp=sharing}{Drive Link}}\\
-Link to Github repo: \textcolor{blue}{\href{https://drive.google.com/drive/folders/1ZnX1hGODNWyqyYUgabagEK3TogYiJN10?usp=sharing}{Github repo}}
+Link to dataset: \textcolor{blue}{\href{https://drive.google.com/drive/folders/1ZnX1hGODNWyqyYUgabagEK3TogYiJN10?usp=sharing}{Drive Link}}\\
+Link to Github repo: \textcolor{blue}{\href{https://github.com/kousikr26/video-activity-classification}{Github repo}}\\
+
+I have split the task into two subproblems task classification and activity classification although the problem statement only asks to do activity classification I have attempted both
+
 \subsection*{Task classification}
+
 
 There are 10 breakfast items (i.e., cereals, coffee, fried egg, milk, salat, sandwich, tea, scrambled egg, pancake, juice)
 Each video segment consists of a person making one of these 10 breakfast items.
@@ -56,15 +61,15 @@ My model consists of two stacked Bidirectional LSTM layers, each cell of which h
         \end{tabular}
     \end{minipage} 
 \end{table}
-\subsection*{Activity classification from feature vectors}
-We have seen the methodology to perform activity classification now coming to the action classification task:
+\subsection*{Activity classification}
+We have seen the methodology to perform task classification now coming to the action classification task:
 There are 48 different activities as given in the mapping.txt file.
 To perform activity classification first I tried using a simple neural network, the reasoning being that each feature vector could be assumed to be independent of the previous and no previous information is necessary to classify any frame. Using such a network with 2 hidden layers I was able to obtain an accuracy of 87.41 \%.
 
-Then I tried an LSTM architecture to see if there is any significant improvement in accuracy.
+Then I tried an LSTM architecture as mentioned in the problem statement to see if there is any significant improvement in accuracy but did not find any.
 
 \subsection*{Miscellaneous}
-At first glance the task classification accuracy isn't too high(75\%) however this is due to insufficient training time.
+At first glance the task classification accuracy isn't too high(approx 80\%) however this is due to insufficient training time.
 Due to time and memory constraints on Google colab and also the painfully slow training process of bidirectional LSTM's I was able to train each training data bundle for one epoch only. Considering this I feel the accuracy is pretty high.
 \\
 Also I used Keras for quick prototyping as due to ongoing exams in my institute I didn't have much time to concentrate here.
